@@ -13,9 +13,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email')->unique();
             $table->string('username')->unique();
-            $table->string('password');
-            $table->enum('roles', ['user', 'admin'])->default('user');
-            $table->rememberToken();
+            $table->string('password');            $table->rememberToken();
             $table->timestamps();
         });
     }
