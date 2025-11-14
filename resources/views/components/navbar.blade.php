@@ -1,30 +1,44 @@
 <div class="flex h-screen overflow-hidden">
     <div x-data="{
-        open: false,
+        open: window.innerWidth >= 768,
         isDesktop: window.innerWidth >= 768,
-        handleResize() {
+        init() {
             this.isDesktop = window.innerWidth >= 768;
-            if (this.isDesktop) {
-                this.open = false;
-            }
+            this.open = this.isDesktop;
+            window.addEventListener('resize', () => {
+                this.isDesktop = window.innerWidth >= 768;
+                if (this.isDesktop) {
+                    this.open = true;
+                } else {
+                    this.open = false;
+                }
+            });
         },
         toggle() {
             this.open = !this.open;
         },
         close() {
-            this.open = false;
+            if (!this.isDesktop) {
+                this.open = false;
+            }
         }
-    }" @resize.window="handleResize()" class="relative">
+    }" class="relative">
 
         <!-- Mobile Header -->
         <div
-            class="md:hidden fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 border-b border-gray-200 bg-white">
-            <div class="text-lg font-bold text-gray-800">Menu</div>
+            class="md:hidden fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 border-b border-gray-200 bg-white shadow-sm">
+            <div class="text-lg font-bold text-gray-800">SPK Sistem</div>
             <button @click="toggle()" aria-controls="sidebar-drawer" :aria-expanded="open.toString()"
-                class="p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                class="p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
                 aria-label="Toggle sidebar navigation">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg x-show="!open" class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+                <svg x-show="open" x-cloak class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                     </path>
                 </svg>
             </button>
@@ -40,26 +54,40 @@
 
         <!-- Sidebar -->
         <aside id="sidebar-drawer"
-            class="fixed md:static inset-y-0 left-0 w-72 bg-white border-r border-gray-200 flex flex-col z-50 transform transition-transform duration-300 ease-in-out"
+            class="fixed md:static inset-y-0 left-0 w-72 bg-white border-r border-gray-200 flex flex-col z-50 transform transition-transform duration-300 ease-in-out shadow-lg md:shadow-none"
             :class="{
                 'translate-x-0': open || isDesktop,
                 '-translate-x-full': !open && !isDesktop
             }"
-            x-cloak @keydown.escape.window="close()">
+            x-cloak @keydown.escape.window="close()" role="navigation" aria-label="Main navigation">
 
             <!-- Logo Header -->
             <div class="p-6 border-b border-gray-100">
                 <div class="flex items-center justify-between">
-                    <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M5 12C5 8.68629 7.68629 6 11 6C14.3137 6 17 8.68629 17 12C17 15.3137 14.3137 18 11 18"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <path d="M19 12C19 15.3137 16.3137 18 13 18C9.68629 18 7 15.3137 7 12" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" />
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
+                        <div
+                            class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center group-hover:bg-indigo-700 transition-colors">
+                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5 12C5 8.68629 7.68629 6 11 6C14.3137 6 17 8.68629 17 12C17 15.3137 14.3137 18 11 18"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                <path d="M19 12C19 15.3137 16.3137 18 13 18C9.68629 18 7 15.3137 7 12"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <span
+                            class="hidden md:block text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">SPK Sistem</span>
+                    </a>
+                    <!-- Close button for mobile -->
+                    <button @click="close()"
+                        class="md:hidden p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
+                        aria-label="Close sidebar">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
-                    </div>
+                    </button>
                 </div>
             </div>
 
@@ -69,35 +97,29 @@
                         'label' => 'Dashboard',
                         'icon' => 'fas fa-home',
                         'route' => 'dashboard',
-                        'badge' => '5',
+                        'badge' => '',
                         'badgeColor' => 'indigo',
                     ],
                     [
-                        'label' => 'Team',
-                        'icon' => 'fas fa-users',
-                        'url' => '#',
-                    ],
-                    [
-                        'label' => 'Projects',
-                        'icon' => 'fas fa-folder',
-                        'url' => '#',
-                        'badge' => '12',
-                    ],
-                    [
-                        'label' => 'Calendar',
-                        'icon' => 'fas fa-calendar',
-                        'url' => '#',
-                        'badge' => '20+',
-                    ],
-                    [
-                        'label' => 'Documents',
+                        'label' => 'Input Data',
                         'icon' => 'fas fa-file-alt',
-                        'url' => '#',
+                        'route' => 'input-data',
+                        'badge' => '',
+                        'badgeColor' => 'indigo',
                     ],
                     [
-                        'label' => 'Reports',
-                        'icon' => 'fas fa-chart-pie',
-                        'url' => '#',
+                        'label' => 'Perhitungan',
+                        'icon' => 'fas fa-calculator',
+                        'route' => 'perhitungan',
+                        'badge' => '',
+                        'badgeColor' => 'indigo',
+                    ],
+                    [
+                        'label' => 'Result',
+                        'icon' => 'fas fa-chart-line',
+                        'route' => 'result',
+                        'badge' => '',
+                        'badgeColor' => 'indigo',
                     ],
                     [
                         'label' => 'User Detail',
@@ -106,79 +128,57 @@
                     ],
                 ];
 
-                $teamNavigation = [
-                    [
-                        'label' => 'Heroicons',
-                        'initial' => 'H',
-                        'url' => '#',
-                    ],
-                    [
-                        'label' => 'Tailwind Labs',
-                        'initial' => 'T',
-                        'url' => '#',
-                    ],
-                    [
-                        'label' => 'Workcation',
-                        'initial' => 'W',
-                        'url' => '#',
-                    ],
-                ];
             @endphp
 
-            <!-- Navigation -->
-            <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1" aria-label="Primary navigation">
-                @foreach ($mainNavigation as $item)
-                    @php
-                        $href = isset($item['route']) ? route($item['route']) : $item['url'] ?? '#';
-                        $isActive = isset($item['route'])
-                            ? request()->routeIs($item['route'])
-                            : $item['active'] ?? false;
-                    @endphp
-                    <x-nav-link :href="$href" :icon="$item['icon']" :badge="$item['badge'] ?? null" :badge-color="$item['badgeColor'] ?? 'gray'"
-                        :active="$isActive" @click="close()">
-                        {{ $item['label'] }}
-                    </x-nav-link>
-                @endforeach
-
-                <div class="pt-6">
-                    <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Your teams</p>
-                    @foreach ($teamNavigation as $team)
-                        <x-nav-link :href="$team['url']" @click="close()">
-                            <x-slot:prefix>
-                                <div
-                                    class="w-6 h-6 bg-gray-200 rounded flex items-center justify-center text-xs font-semibold text-gray-600">
-                                    {{ $team['initial'] }}
-                                </div>
-                            </x-slot:prefix>
-                            {{ $team['label'] }}
+            <div class="flex-1 flex flex-col overflow-hidden">
+                <!-- Navigation -->
+                <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1" aria-label="Primary navigation">
+                    @foreach ($mainNavigation as $item)
+                        @php
+                            $href = isset($item['route']) ? route($item['route']) : $item['url'] ?? '#';
+                            $isActive = isset($item['route'])
+                                ? request()->routeIs($item['route'])
+                                : $item['active'] ?? false;
+                        @endphp
+                        <x-nav-link :href="$href" :icon="$item['icon']" :badge="$item['badge'] ?? null" :badge-color="$item['badgeColor'] ?? 'gray'"
+                            :active="$isActive" @click="close()">
+                            {{ $item['label'] }}
                         </x-nav-link>
                     @endforeach
-                </div>
-            </nav>
+                </nav>
 
-            <!-- User Profile -->
-            <div class="p-4 border-t border-gray-200">
-                @php
-                    $user = Auth::user();
-                    $displayName = $user?->username ?? 'User';
-                    $displayEmail = $user?->email ?? '@' . ($user?->username ?? 'user');
-                @endphp
-                <div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($displayName) }}&background=4F46E5&color=fff"
-                        alt="{{ $displayName }}" class="w-10 h-10 rounded-full">
-                    <div class="flex-1 min-w-0">
-                        <p class="font-medium text-gray-700 truncate">{{ $displayName }}</p>
-                        <p class="text-xs text-gray-500 truncate">{{ $displayEmail }}</p>
-                    </div>
+                <!-- User Profile -->
+                <div class="mt-auto border-t border-gray-200 p-4 bg-gray-50">
+                    @php
+                        $user = Auth::user();
+                        $displayName = $user?->username ?? 'User';
+                        $displayEmail = $user?->email ?? '@' . ($user?->username ?? 'user');
+                    @endphp
+                    <a href="{{ route('user.detail') }}" @click="close()"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white transition-colors mb-3 group">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($displayName) }}&background=4F46E5&color=fff"
+                            alt="{{ $displayName }}"
+                            class="w-10 h-10 rounded-full ring-2 ring-white group-hover:ring-indigo-200 transition-all">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-gray-700 truncate group-hover:text-indigo-600 transition-colors">
+                                {{ $displayName }}</p>
+                            <p class="text-xs text-gray-500 truncate">{{ $displayEmail }}</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-indigo-600 transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm hover:shadow-md">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </form>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" class="mt-4">
-                    @csrf
-                    <button type="submit"
-                        class="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </button>
-                </form>
             </div>
         </aside>
     </div>

@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>{{ $titile }}</x-slot:title>
+    <x-slot:title>{{ $title }}</x-slot:title>
 
     <div class="space-y-6">
         <!-- User Summary -->
@@ -32,7 +32,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                            class="inline-flex w-full justify-center items-center px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition">
+                            class="inline-flex w-full justify-center items-center px-4 py-2.5 rounded-lg border bg-red-500 border-gray-300 text-white font-semibold hover:bg-red-400 transition">
                             Logout
                         </button>
                     </form>

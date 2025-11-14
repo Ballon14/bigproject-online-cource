@@ -86,7 +86,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         return view('user-detail', [
-            'titile' => 'User Detail',
+            'title' => 'User Detail',
             'user' => $user,
         ]);
     }

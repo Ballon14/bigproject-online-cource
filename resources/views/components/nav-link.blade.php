@@ -9,9 +9,10 @@
 @php
     $baseClasses =
         'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500';
-    $stateClasses = $active ? 'text-indigo-600 bg-indigo-50 font-semibold' : 'text-gray-700 hover:bg-gray-50';
+    $activeClasses = 'text-indigo-600 bg-indigo-50 font-semibold';
+    $inactiveClasses = 'text-gray-700 hover:bg-gray-100';
     $layoutClasses = $badge ? 'justify-between' : '';
-    $classes = trim("{$baseClasses} {$stateClasses} {$layoutClasses}");
+    $classes = trim(($active ? $activeClasses : $inactiveClasses) . ' ' . $baseClasses . ' ' . $layoutClasses);
 
     $iconClasses = $active ? 'text-indigo-600' : 'text-gray-500';
 
@@ -27,7 +28,7 @@
     {{ $attributes->merge([
         'href' => $href,
         'class' => $classes,
-        'aria-current' => $active ? 'page' : null,
+        'aria-current' => $active ? 'page' : false,
     ]) }}>
     <div class="flex items-center gap-3">
         @isset($prefix)
