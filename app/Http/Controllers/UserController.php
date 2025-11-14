@@ -80,5 +80,15 @@ class UserController extends Controller
 
         return redirect()->route('login')->with('status', 'You have been logged out.');
     }
+
+    public function profile()
+    {
+        $user = Auth::user();
+
+        return view('user-detail', [
+            'titile' => 'User Detail',
+            'user' => $user,
+        ]);
+    }
 }
 

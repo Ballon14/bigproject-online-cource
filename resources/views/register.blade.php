@@ -50,7 +50,7 @@
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <input id="password" type="password" name="password" required
                     class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                    placeholder="••••••••">
+                    placeholder="Password">
                 @error('password')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror

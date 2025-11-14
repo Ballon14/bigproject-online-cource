@@ -13,5 +13,10 @@ Route::post('/register', [UserController::class, 'register'])->name('register.st
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', ['titile' => 'Dashboard']);
 })->middleware('auth')->name('dashboard');
+
+Route::get('/user-detail', [UserController::class, 'profile'])
+    ->middleware('auth')
+    ->name('user.detail');
+
