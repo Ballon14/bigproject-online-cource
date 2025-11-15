@@ -1,66 +1,362 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SPK Sistem - Laravel Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem pendukung keputusan (SPK) berbasis web yang dibangun dengan Laravel framework.
 
-## About Laravel
+## 📋 Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sebelum memulai, pastikan Anda telah menginstall software berikut:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Software yang Diperlukan:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **PHP** >= 8.1
 
-## Learning Laravel
+    - Extensions yang diperlukan:
+        - BCMath
+        - Ctype
+        - Fileinfo
+        - JSON
+        - Mbstring
+        - OpenSSL
+        - PDO
+        - Tokenizer
+        - XML
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+2. **Composer** (PHP Package Manager)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    - Download dari: https://getcomposer.org/
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Node.js** >= 16.x dan **npm** (atau **yarn**)
 
-## Laravel Sponsors
+    - Download dari: https://nodejs.org/
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. **Database Server** (pilih salah satu):
 
-### Premium Partners
+    - MySQL >= 5.7
+    - PostgreSQL >= 10
+    - SQLite >= 3.8.8
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5. **Web Server** (pilih salah satu):
+    - Apache dengan mod_rewrite
+    - Nginx
+    - PHP Built-in Server (untuk development)
 
-## Contributing
+## 🚀 Cara Clone Repository
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Clone repository ini menggunakan Git:
 
-## Code of Conduct
+```bash
+git clone <repository-url>
+cd bigproject
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Atau jika menggunakan SSH:
 
-## Security Vulnerabilities
+```bash
+git clone git@github.com:username/bigproject.git
+cd bigproject
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📦 Instalasi
 
-## License
+### 1. Install Dependencies PHP (Composer)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer install
+```
+
+### 2. Setup Environment File
+
+Copy file `.env.example` menjadi `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Jika file `.env.example` tidak ada, buat file `.env` baru dan isi dengan konfigurasi berikut:
+
+```env
+APP_NAME="SPK Sistem"
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=bigproject
+DB_USERNAME=root
+DB_PASSWORD=
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+FILESYSTEM_DISK=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=mailpit
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=
+AWS_USE_PATH_STYLE_ENDPOINT=false
+
+VITE_APP_NAME="${APP_NAME}"
+```
+
+### 3. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 4. Konfigurasi Database
+
+Edit file `.env` dan sesuaikan konfigurasi database:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database_anda
+DB_USERNAME=username_database_anda
+DB_PASSWORD=password_database_anda
+```
+
+### 5. Buat Database
+
+Buat database baru di MySQL/PostgreSQL:
+
+```sql
+CREATE DATABASE bigproject CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Atau untuk SQLite, cukup pastikan file database dapat ditulis oleh aplikasi.
+
+### 6. Jalankan Migration
+
+```bash
+php artisan migrate
+```
+
+### 7. Install Dependencies Frontend (Node.js)
+
+```bash
+npm install
+```
+
+atau jika menggunakan yarn:
+
+```bash
+yarn install
+```
+
+## ▶️ Cara Menjalankan Project
+
+### Development Mode
+
+1. **Jalankan Laravel Development Server:**
+
+```bash
+php artisan serve
+```
+
+Server akan berjalan di: `http://localhost:8000`
+
+2. **Jalankan Vite Development Server** (di terminal terpisah):
+
+```bash
+npm run dev
+```
+
+atau:
+
+```bash
+yarn dev
+```
+
+3. **Akses aplikasi di browser:**
+
+Buka browser dan akses: `http://localhost:8000`
+
+### Production Mode
+
+1. **Build assets untuk production:**
+
+```bash
+npm run build
+```
+
+atau:
+
+```bash
+yarn build
+```
+
+2. **Optimize Laravel:**
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+3. **Jalankan server production** (sesuai dengan web server yang digunakan)
+
+## 🔧 Konfigurasi Tambahan
+
+### Membuat User Baru
+
+Untuk membuat user baru, Anda bisa:
+
+1. **Menggunakan Tinker:**
+
+```bash
+php artisan tinker
+```
+
+Kemudian jalankan:
+
+```php
+$user = new App\Models\User();
+$user->nama = 'Nama Lengkap';
+$user->username = 'username';
+$user->email = 'email@example.com';
+$user->password = Hash::make('password');
+$user->save();
+```
+
+2. **Atau menggunakan Seeder** (jika ada)
+
+```bash
+php artisan db:seed
+```
+
+### Storage Link (jika menggunakan storage)
+
+```bash
+php artisan storage:link
+```
+
+## 📁 Struktur Project
+
+```
+bigproject/
+├── app/                    # Application logic
+│   ├── Http/
+│   │   └── Controllers/    # Controllers
+│   └── Models/             # Eloquent Models
+├── database/
+│   ├── migrations/         # Database migrations
+│   └── seeders/            # Database seeders
+├── public/                 # Public assets
+├── resources/
+│   ├── views/              # Blade templates
+│   ├── css/               # CSS files
+│   └── js/                # JavaScript files
+├── routes/
+│   └── web.php            # Web routes
+├── .env                   # Environment configuration
+└── composer.json          # PHP dependencies
+```
+
+## 🛠️ Teknologi yang Digunakan
+
+-   **Backend:**
+
+    -   Laravel 10.x
+    -   PHP 8.1+
+
+-   **Frontend:**
+
+    -   Tailwind CSS 3.x
+    -   Alpine.js 3.x
+    -   Font Awesome 6.4.0 (via CDN)
+    -   Vite (Build Tool)
+
+-   **Database:**
+    -   MySQL/PostgreSQL/SQLite
+
+## 📝 Routes yang Tersedia
+
+-   `/` - Login page
+-   `/login` - Login page
+-   `/register` - Register page
+-   `/dashboard` - Dashboard (requires authentication)
+-   `/user-detail` - User profile detail (requires authentication)
+-   `/user-detail/edit` - Edit profile (requires authentication)
+-   `/input-data` - Input data page (requires authentication)
+-   `/perhitungan` - Calculation page (requires authentication)
+-   `/result` - Result page (requires authentication)
+
+## 🔐 Authentication
+
+Aplikasi menggunakan Laravel's built-in authentication. User harus:
+
+1. Register akun baru di `/register`
+2. Login di `/login`
+3. Setelah login, akan diarahkan ke `/dashboard`
+
+## 🐛 Troubleshooting
+
+### Error: "Class 'PDO' not found"
+
+-   Install PHP PDO extension: `sudo apt-get install php-pdo php-mysql`
+
+### Error: "Vite manifest not found"
+
+-   Jalankan `npm run dev` atau `npm run build`
+
+### Error: "SQLSTATE[HY000] [2002] Connection refused"
+
+-   Pastikan database server berjalan
+-   Periksa konfigurasi database di file `.env`
+
+### Error: "The stream or file could not be opened"
+
+-   Pastikan folder `storage/logs` dan `storage/framework` memiliki permission write:
+    ```bash
+    chmod -R 775 storage bootstrap/cache
+    ```
+
+### Assets tidak ter-load
+
+-   Pastikan Vite dev server berjalan: `npm run dev`
+-   Atau build assets: `npm run build`
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 👥 Contributing
+
+Jika Anda ingin berkontribusi pada project ini, silakan:
+
+1. Fork repository
+2. Buat branch baru untuk fitur Anda
+3. Commit perubahan Anda
+4. Push ke branch
+5. Buat Pull Request
+
+## 📞 Support
+
+Untuk pertanyaan atau bantuan, silakan buat issue di repository ini.

@@ -20,12 +20,20 @@ Route::get('/user-detail', [UserController::class, 'profile'])
     ->middleware('auth')
     ->name('user.detail');
 
+Route::get('/user-detail/edit', [UserController::class, 'edit'])
+    ->middleware('auth')
+    ->name('user.edit');
+
+Route::put('/user-detail', [UserController::class, 'update'])
+    ->middleware('auth')
+    ->name('user.update');
+
 Route::get('/input-data', function () {
     return view('input-data', ['title' => 'Input Data']);
 })->middleware('auth')->name('input-data');
 
 Route::get('/perhitungan', function () {
-    return view('perhitungan', ['title' => 'Perhitungan']);
+    return view('perhitungan', ['title' => 'Calculation']);
 })->middleware('auth')->name('perhitungan');
 
 Route::get('/result', function () {

@@ -113,7 +113,7 @@
                         'badgeColor' => 'indigo',
                     ],
                     [
-                        'label' => 'Perhitungan',
+                        'label' => 'Calculation',
                         'icon' => 'fas fa-calculator',
                         'route' => 'perhitungan',
                         'badge' => '',

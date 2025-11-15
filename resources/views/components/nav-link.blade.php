@@ -34,7 +34,14 @@
         @isset($prefix)
             {{ $prefix }}
         @elseif ($icon)
-            <i class="{{ $icon }} w-5 text-center {{ $iconClasses }}"></i>
+            @php
+                $isSvgFile = str_ends_with($icon, '.svg') || str_starts_with($icon, 'images/');
+            @endphp
+            @if ($isSvgFile)
+                <img src="{{ asset($icon) }}" alt="" class="w-5 h-5 {{ $iconClasses }}" />
+            @else
+                <i class="{{ $icon }} w-5 text-center {{ $iconClasses }}"></i>
+            @endif
             @endif
             <span class="font-medium truncate">{{ $slot }}</span>
         </div>
