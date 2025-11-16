@@ -1,362 +1,355 @@
-# SPK Sistem - Laravel Project
+# SPK Online Courses - Decision Support System
 
-Sistem pendukung keputusan (SPK) berbasis web yang dibangun dengan Laravel framework.
+A web-based Decision Support System (DSS) application for recommending online courses using the **SAW (Simple Additive Weighting)** method. Built with Laravel 10, this application helps users make informed decisions when selecting online courses based on multiple criteria.
 
-## 📋 Requirements
+## 🚀 Features
 
-Sebelum memulai, pastikan Anda telah menginstall software berikut:
+### Core Functionality
 
-### Software yang Diperlukan:
+-   **Course Management**: Full CRUD operations for managing online courses
+-   **SAW Calculation**: Automated ranking calculation using Simple Additive Weighting method
+-   **Multi-Criteria Decision Making**: Evaluate courses based on:
+    -   Cost (lower is better)
+    -   Rating (higher is better)
+    -   Duration (lower is better)
+    -   Flexibility (higher is better)
+    -   Certificate quality (higher is better)
+    -   Last update frequency (higher is better)
+-   **Real-time Ranking**: Dynamic course ranking based on weighted criteria
+-   **Normalization Matrix**: Visual representation of normalized decision matrix
+-   **Detailed Results**: Comprehensive ranking results with normalization details
 
-1. **PHP** >= 8.1
+### User Features
 
-    - Extensions yang diperlukan:
-        - BCMath
-        - Ctype
-        - Fileinfo
-        - JSON
-        - Mbstring
-        - OpenSSL
-        - PDO
-        - Tokenizer
-        - XML
+-   **User Authentication**: Secure login and registration system
+-   **User Profile Management**: Edit profile and account settings
+-   **Dashboard**: Overview with statistics and course charts
+-   **Responsive Design**: Mobile-friendly interface with card views
+-   **Interactive UI**: Modern UI with Alpine.js for dynamic interactions
+-   **Data Visualization**: Chart.js integration for course cost visualization
 
-2. **Composer** (PHP Package Manager)
+## 📋 Prerequisites
 
-    - Download dari: https://getcomposer.org/
+Before you begin, ensure you have the following installed:
 
-3. **Node.js** >= 16.x dan **npm** (atau **yarn**)
+-   **PHP** >= 8.1
+-   **Composer** (PHP dependency manager)
+-   **Node.js** and **npm** (for frontend assets)
+-   **MySQL** or **PostgreSQL** (database)
+-   **Web Server** (Apache/Nginx) or PHP built-in server
 
-    - Download dari: https://nodejs.org/
+## 🛠️ Installation
 
-4. **Database Server** (pilih salah satu):
-
-    - MySQL >= 5.7
-    - PostgreSQL >= 10
-    - SQLite >= 3.8.8
-
-5. **Web Server** (pilih salah satu):
-    - Apache dengan mod_rewrite
-    - Nginx
-    - PHP Built-in Server (untuk development)
-
-## 🚀 Cara Clone Repository
-
-1. Clone repository ini menggunakan Git:
+### 1. Clone the Repository
 
 ```bash
 git clone <repository-url>
 cd bigproject
 ```
 
-Atau jika menggunakan SSH:
-
-```bash
-git clone git@github.com:username/bigproject.git
-cd bigproject
-```
-
-## 📦 Instalasi
-
-### 1. Install Dependencies PHP (Composer)
+### 2. Install PHP Dependencies
 
 ```bash
 composer install
 ```
 
-### 2. Setup Environment File
-
-Copy file `.env.example` menjadi `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Jika file `.env.example` tidak ada, buat file `.env` baru dan isi dengan konfigurasi berikut:
-
-```env
-APP_NAME="SPK Sistem"
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost
-
-LOG_CHANNEL=stack
-LOG_DEPRECATIONS_CHANNEL=null
-LOG_LEVEL=debug
-
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=bigproject
-DB_USERNAME=root
-DB_PASSWORD=
-
-BROADCAST_DRIVER=log
-CACHE_DRIVER=file
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=sync
-SESSION_DRIVER=file
-SESSION_LIFETIME=120
-
-MEMCACHED_HOST=127.0.0.1
-
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-MAIL_MAILER=smtp
-MAIL_HOST=mailpit
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="hello@example.com"
-MAIL_FROM_NAME="${APP_NAME}"
-
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
-AWS_USE_PATH_STYLE_ENDPOINT=false
-
-VITE_APP_NAME="${APP_NAME}"
-```
-
-### 3. Generate Application Key
-
-```bash
-php artisan key:generate
-```
-
-### 4. Konfigurasi Database
-
-Edit file `.env` dan sesuaikan konfigurasi database:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nama_database_anda
-DB_USERNAME=username_database_anda
-DB_PASSWORD=password_database_anda
-```
-
-### 5. Buat Database
-
-Buat database baru di MySQL/PostgreSQL:
-
-```sql
-CREATE DATABASE bigproject CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-Atau untuk SQLite, cukup pastikan file database dapat ditulis oleh aplikasi.
-
-### 6. Jalankan Migration
-
-```bash
-php artisan migrate
-```
-
-### 7. Install Dependencies Frontend (Node.js)
+### 3. Install Node Dependencies
 
 ```bash
 npm install
 ```
 
-atau jika menggunakan yarn:
+### 4. Environment Configuration
 
 ```bash
-yarn install
+cp .env.example .env
+php artisan key:generate
 ```
 
-## ▶️ Cara Menjalankan Project
+Edit the `.env` file and configure your database:
 
-### Development Mode
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
 
-1. **Jalankan Laravel Development Server:**
+### 5. Run Database Migrations
 
 ```bash
-php artisan serve
+php artisan migrate
 ```
 
-Server akan berjalan di: `http://localhost:8000`
-
-2. **Jalankan Vite Development Server** (di terminal terpisah):
-
-```bash
-npm run dev
-```
-
-atau:
-
-```bash
-yarn dev
-```
-
-3. **Akses aplikasi di browser:**
-
-Buka browser dan akses: `http://localhost:8000`
-
-### Production Mode
-
-1. **Build assets untuk production:**
-
-```bash
-npm run build
-```
-
-atau:
-
-```bash
-yarn build
-```
-
-2. **Optimize Laravel:**
-
-```bash
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-```
-
-3. **Jalankan server production** (sesuai dengan web server yang digunakan)
-
-## 🔧 Konfigurasi Tambahan
-
-### Membuat User Baru
-
-Untuk membuat user baru, Anda bisa:
-
-1. **Menggunakan Tinker:**
-
-```bash
-php artisan tinker
-```
-
-Kemudian jalankan:
-
-```php
-$user = new App\Models\User();
-$user->nama = 'Nama Lengkap';
-$user->username = 'username';
-$user->email = 'email@example.com';
-$user->password = Hash::make('password');
-$user->save();
-```
-
-2. **Atau menggunakan Seeder** (jika ada)
+### 6. (Optional) Seed Sample Data
 
 ```bash
 php artisan db:seed
 ```
 
-### Storage Link (jika menggunakan storage)
+### 7. Build Frontend Assets
 
 ```bash
-php artisan storage:link
+npm run build
 ```
 
-## 📁 Struktur Project
+For development with hot reload:
+
+```bash
+npm run dev
+```
+
+### 8. Start the Development Server
+
+```bash
+php artisan serve
+```
+
+The application will be available at `http://localhost:8000`
+
+## 📁 Project Structure
 
 ```
 bigproject/
-├── app/                    # Application logic
+├── app/
 │   ├── Http/
-│   │   └── Controllers/    # Controllers
-│   └── Models/             # Eloquent Models
+│   │   └── Controllers/
+│   │       ├── CourseController.php    # Main course and calculation logic
+│   │       └── UserController.php     # Authentication and user management
+│   └── Models/
+│       ├── Course.php                 # Course model
+│       ├── Calculation.php            # Calculation model
+│       ├── CalculationResult.php      # Calculation result model
+│       └── User.php                   # User model
 ├── database/
-│   ├── migrations/         # Database migrations
-│   └── seeders/            # Database seeders
-├── public/                 # Public assets
+│   ├── migrations/                    # Database migrations
+│   └── seeders/                      # Database seeders
 ├── resources/
-│   ├── views/              # Blade templates
-│   ├── css/               # CSS files
-│   └── js/                # JavaScript files
-├── routes/
-│   └── web.php            # Web routes
-├── .env                   # Environment configuration
-└── composer.json          # PHP dependencies
+│   ├── views/                         # Blade templates
+│   │   ├── components/                # Reusable components
+│   │   ├── dashboard.blade.php        # Main dashboard
+│   │   ├── input-data.blade.php       # Add course form
+│   │   ├── data-kursus.blade.php      # Course list
+│   │   ├── perhitungan.blade.php      # SAW calculation page
+│   │   └── result.blade.php           # Ranking results
+│   ├── css/
+│   │   └── app.css                    # Tailwind CSS
+│   └── js/
+│       └── app.js                     # JavaScript entry point
+└── routes/
+    └── web.php                        # Application routes
 ```
 
-## 🛠️ Teknologi yang Digunakan
+## 🎯 Usage
 
--   **Backend:**
+### 1. Register/Login
 
-    -   Laravel 10.x
-    -   PHP 8.1+
+-   Navigate to the login page
+-   Register a new account or login with existing credentials
 
--   **Frontend:**
+### 2. Add Courses
 
-    -   Tailwind CSS 3.x
-    -   Alpine.js 3.x
-    -   Font Awesome 6.4.0 (via CDN)
-    -   Vite (Build Tool)
+-   Go to **Input Data** from the sidebar
+-   Fill in course details:
+    -   Course Name
+    -   Cost (in thousands of rupiah)
+    -   Rating (0.0 - 5.0)
+    -   Duration (in hours)
+    -   Flexibility (1-5)
+    -   Certificate quality (1-5)
+    -   Last update level (1-5)
+-   Click **Save New Course**
 
--   **Database:**
-    -   MySQL/PostgreSQL/SQLite
+### 3. View All Courses
 
-## 📝 Routes yang Tersedia
+-   Navigate to **Data Courses**
+-   View, edit, or delete existing courses
+-   Courses are paginated for better performance
 
--   `/` - Login page
--   `/login` - Login page
--   `/register` - Register page
--   `/dashboard` - Dashboard (requires authentication)
--   `/user-detail` - User profile detail (requires authentication)
--   `/user-detail/edit` - Edit profile (requires authentication)
--   `/input-data` - Input data page (requires authentication)
--   `/perhitungan` - Calculation page (requires authentication)
--   `/result` - Result page (requires authentication)
+### 4. Calculate SAW Ranking
 
-## 🔐 Authentication
+-   Go to **Calculation** page
+-   Enter criteria weights for each factor:
+    -   Cost weight
+    -   Rating weight
+    -   Duration weight
+    -   Flexibility weight
+    -   Certificate weight
+    -   Last update weight
+-   Total weights will be normalized to 100%
+-   Click **Calculate SAW**
+-   View the results including:
+    -   Initial Decision Matrix
+    -   Normalization Matrix
+    -   Final Ranking
 
-Aplikasi menggunakan Laravel's built-in authentication. User harus:
+### 5. View Detailed Results
 
-1. Register akun baru di `/register`
-2. Login di `/login`
-3. Setelah login, akan diarahkan ke `/dashboard`
+-   After calculation, click **View Detailed Ranking Results**
+-   See comprehensive ranking with:
+    -   Criteria weights used
+    -   Course rankings
+    -   Normalization matrix details
+    -   SAW scores
 
-## 🐛 Troubleshooting
+## 🔬 SAW Method Explanation
 
-### Error: "Class 'PDO' not found"
+The **Simple Additive Weighting (SAW)** method is a multi-criteria decision-making technique that:
 
--   Install PHP PDO extension: `sudo apt-get install php-pdo php-mysql`
+1. **Normalizes** the decision matrix:
 
-### Error: "Vite manifest not found"
+    - **Benefit criteria** (higher is better): `Rij = Xij / Max(Xij)`
+    - **Cost criteria** (lower is better): `Rij = Min(Xij) / Xij`
 
--   Jalankan `npm run dev` atau `npm run build`
+2. **Calculates** the final score:
 
-### Error: "SQLSTATE[HY000] [2002] Connection refused"
+    - `Vi = Σ (Rij × Wj)`
+    - Where:
+        - `Vi` = Final score for alternative i
+        - `Rij` = Normalized value
+        - `Wj` = Weight for criteria j
 
--   Pastikan database server berjalan
--   Periksa konfigurasi database di file `.env`
+3. **Ranks** alternatives based on the final score (higher is better)
 
-### Error: "The stream or file could not be opened"
+## 🛡️ Security Features
 
--   Pastikan folder `storage/logs` dan `storage/framework` memiliki permission write:
-    ```bash
-    chmod -R 775 storage bootstrap/cache
-    ```
+-   **Authentication**: Laravel's built-in authentication system
+-   **CSRF Protection**: All forms protected with CSRF tokens
+-   **Input Validation**: Server-side validation for all inputs
+-   **SQL Injection Prevention**: Eloquent ORM with parameter binding
+-   **XSS Protection**: Blade templating engine auto-escapes output
 
-### Assets tidak ter-load
+## 🎨 Technologies Used
 
--   Pastikan Vite dev server berjalan: `npm run dev`
--   Atau build assets: `npm run build`
+### Backend
+
+-   **Laravel 10**: PHP framework
+-   **MySQL/PostgreSQL**: Database
+-   **Eloquent ORM**: Database abstraction
+
+### Frontend
+
+-   **Tailwind CSS**: Utility-first CSS framework
+-   **Alpine.js**: Lightweight JavaScript framework
+-   **Chart.js**: Data visualization library
+-   **Font Awesome**: Icon library
+-   **Vite**: Build tool and dev server
+
+## 📊 Database Schema
+
+### Tables
+
+-   **users**: User accounts and authentication
+-   **courses**: Course data (name, cost, rating, duration, etc.)
+-   **calculations**: SAW calculation records with criteria weights
+-   **calculation_results**: Individual course rankings and scores
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Key environment variables in `.env`:
+
+-   `APP_NAME`: Application name
+-   `APP_ENV`: Environment (local, production)
+-   `APP_DEBUG`: Debug mode
+-   `DB_*`: Database configuration
+-   `SESSION_DRIVER`: Session storage driver
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+php artisan test
+```
+
+## 📝 API Routes
+
+### Authentication Routes
+
+-   `GET /login` - Login page
+-   `POST /login` - Process login
+-   `GET /register` - Registration page
+-   `POST /register` - Process registration
+-   `POST /logout` - Logout
+
+### Course Routes (Protected)
+
+-   `GET /dashboard` - Dashboard
+-   `GET /input-data` - Add course form
+-   `POST /input-data` - Store new course
+-   `GET /all-data` - List all courses
+-   `GET /all-data/{id}/edit` - Edit course
+-   `PUT /all-data/{id}/update` - Update course
+-   `DELETE /all-data/{id}/delete` - Delete course
+
+### Calculation Routes (Protected)
+
+-   `GET /perhitungan` - SAW calculation page
+-   `POST /perhitungan` - Process calculation
+-   `GET /result` - View ranking results
+
+### User Routes (Protected)
+
+-   `GET /user-detail` - User profile
+-   `GET /user-detail/edit` - Edit profile
+-   `PUT /user-detail` - Update profile
+
+## 🚀 Deployment
+
+### Production Build
+
+```bash
+# Build assets for production
+npm run build
+
+# Optimize Laravel
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### Server Requirements
+
+-   PHP >= 8.1
+-   MySQL >= 5.7 or PostgreSQL >= 10
+-   Web server (Apache/Nginx)
+-   Composer
+-   Node.js and npm
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📄 License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-## 👥 Contributing
+## 👤 Author
 
-Jika Anda ingin berkontribusi pada project ini, silakan:
+**Your Name**
 
-1. Fork repository
-2. Buat branch baru untuk fitur Anda
-3. Commit perubahan Anda
-4. Push ke branch
-5. Buat Pull Request
+-   GitHub: [@yourusername](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+-   Laravel framework
+-   Tailwind CSS
+-   Alpine.js
+-   Chart.js
+-   Font Awesome
 
 ## 📞 Support
 
-Untuk pertanyaan atau bantuan, silakan buat issue di repository ini.
+For support, email your-email@example.com or open an issue in the repository.
+
+---
+
+**Note**: This application is designed for educational purposes and demonstrates the implementation of the SAW (Simple Additive Weighting) method in a web-based decision support system.

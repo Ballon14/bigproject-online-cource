@@ -41,19 +41,21 @@
 
         <!-- Title & Message -->
         <div class="text-center mb-6">
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Logout</h3>
-            <p class="text-gray-600">Apakah Anda yakin ingin keluar dari akun Anda?</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Confirm Logout</h3>
+            <p class="text-gray-600">Are you sure you want to logout from your account?</p>
         </div>
 
         <!-- Buttons -->
         <div class="flex gap-3">
             <button @click="closeLogoutModal()"
-                class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
-                Batal
+                class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                aria-label="Cancel logout">
+                Cancel
             </button>
             <button @click="confirmLogout()"
-                class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
-                Ya, Logout
+                class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                aria-label="Confirm logout">
+                Yes, Logout
             </button>
         </div>
     </div>

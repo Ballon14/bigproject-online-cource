@@ -95,7 +95,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                        <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                         <input id="nama" type="text" name="nama" value="{{ old('nama', $user->nama) }}"
                             required
                             class="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition"
@@ -192,19 +192,21 @@
 
                 <!-- Title & Message -->
                 <div class="text-center mb-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Edit Profile</h3>
-                    <p class="text-gray-600">Apakah Anda yakin ingin menyimpan perubahan pada profile Anda?</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Confirm Edit Profile</h3>
+                    <p class="text-gray-600">Are you sure you want to save changes to your profile?</p>
                 </div>
 
                 <!-- Buttons -->
                 <div class="flex gap-3">
                     <button @click="closeConfirmModal()"
-                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
-                        Batal
+                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                        aria-label="Cancel edit profile">
+                        Cancel
                     </button>
                     <button @click="confirmEdit()"
-                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-                        Ya, Simpan
+                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                        aria-label="Confirm and save profile changes">
+                        Yes, Save
                     </button>
                 </div>
             </div>
@@ -237,20 +239,21 @@
 
                 <!-- Title & Message -->
                 <div class="text-center mb-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Perubahan Belum Disimpan</h3>
-                    <p class="text-gray-600">Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin
-                        membatalkan dan meninggalkan halaman ini?</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Unsaved Changes</h3>
+                    <p class="text-gray-600">You have unsaved changes. Are you sure you want to cancel and leave this page?</p>
                 </div>
 
                 <!-- Buttons -->
                 <div class="flex gap-3">
                     <button @click="closeCancelModal()"
-                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
-                        Kembali
+                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
+                        aria-label="Go back to editing">
+                        Go Back
                     </button>
                     <button @click="confirmCancel()"
-                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-yellow-600 rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors">
-                        Ya, Batalkan
+                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-yellow-600 rounded-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors"
+                        aria-label="Confirm cancel and discard changes">
+                        Yes, Cancel
                     </button>
                 </div>
             </div>
