@@ -1,19 +1,27 @@
 <?php
 
-use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Dashboard;
+use App\Livewire\CourseForm;
+use App\Livewire\CourseList;
+use App\Livewire\PerhitunganSaw;
+use App\Livewire\ResultDisplay;
 
-Route::get('/', [UserController::class, 'showLoginForm'])->name('login');
-Route::get('/login', [UserController::class, 'showLoginForm']);
-Route::post('/login', [UserController::class, 'login'])->name('login.perform');
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 
-Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [UserController::class, 'register'])->name('register.store');
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm']);
+Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
 
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
 
-Route::get('/dashboard', [CourseController::class, 'dashboard'])->middleware('auth')->name('dashboard');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Livewire Routes
+Route::get('/dashboard', Dashboard::class)->middleware('auth')->name('dashboard');
 
 Route::get('/user-detail', [UserController::class, 'profile'])
     ->middleware('auth')
@@ -27,15 +35,9 @@ Route::put('/user-detail', [UserController::class, 'update'])
     ->middleware('auth')
     ->name('user.update');
 
-Route::get('/input-data', [CourseController::class, 'inputData'])->middleware('auth')->name('input-data');
-Route::post('/input-data', [CourseController::class, 'storeCourse'])->middleware('auth')->name('input-data.store');
+Route::get('/input-data', CourseForm::class)->middleware('auth')->name('input-data');
+Route::get('/all-data', CourseList::class)->middleware('auth')->name('all-data');
+Route::get('/all-data/{id}/edit', CourseForm::class)->middleware('auth')->name('all-data.edit');
 
-Route::get('/all-data', [CourseController::class, 'index'])->middleware('auth')->name('all-data');
-Route::get('/all-data/{id}/edit', [CourseController::class, 'edit'])->middleware('auth')->name('all-data.edit');
-Route::put('/all-data/{id}/update', [CourseController::class, 'update'])->middleware('auth')->name('all-data.update');
-Route::delete('/all-data/{id}/delete', [CourseController::class, 'destroy'])->middleware('auth')->name('all-data.destroy');
-
-Route::get('/perhitungan', [CourseController::class, 'perhitungan'])->middleware('auth')->name('perhitungan');
-Route::post('/perhitungan', [CourseController::class, 'storePerhitungan'])->middleware('auth')->name('perhitungan.store');
-
-Route::get('/result', [CourseController::class, 'result'])->middleware('auth')->name('result');
+Route::get('/perhitungan', PerhitunganSaw::class)->middleware('auth')->name('perhitungan');
+Route::get('/result', ResultDisplay::class)->middleware('auth')->name('result');
