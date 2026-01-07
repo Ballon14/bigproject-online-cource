@@ -1,3 +1,5 @@
+@props(['title' => 'SPK Sistem'])
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -5,7 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Sistem Pendukung Keputusan (SPK) untuk rekomendasi kursus online menggunakan metode SAW (Simple Additive Weighting)">
+    <meta name="description"
+        content="Sistem Pendukung Keputusan (SPK) untuk rekomendasi kursus online menggunakan metode SAW (Simple Additive Weighting)">
     <meta name="keywords" content="SPK, SAW, Sistem Pendukung Keputusan, Kursus Online, Rekomendasi Kursus">
     <meta name="author" content="SPK Sistem">
     <meta name="robots" content="index, follow">
@@ -15,7 +18,6 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @livewireStyles
 </head>
 
 <body class="bg-gray-100 min-h-screen">
@@ -33,7 +35,6 @@
 
     <!-- Global Logout Modal -->
     <x-logout-modal formId="logout-form" />
-    @livewireScripts
 </body>
 
 </html>

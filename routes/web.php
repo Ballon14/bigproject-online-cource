@@ -1,12 +1,10 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CalculationController;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Dashboard;
-use App\Livewire\CourseForm;
-use App\Livewire\CourseList;
-use App\Livewire\PerhitunganSaw;
-use App\Livewire\ResultDisplay;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -20,9 +18,10 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Livewire Routes
-Route::get('/dashboard', Dashboard::class)->middleware('auth')->name('dashboard');
+// Dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
+// User Profile
 Route::get('/user-detail', [UserController::class, 'profile'])
     ->middleware('auth')
     ->name('user.detail');
@@ -35,9 +34,20 @@ Route::put('/user-detail', [UserController::class, 'update'])
     ->middleware('auth')
     ->name('user.update');
 
-Route::get('/input-data', CourseForm::class)->middleware('auth')->name('input-data');
-Route::get('/all-data', CourseList::class)->middleware('auth')->name('all-data');
-Route::get('/all-data/{id}/edit', CourseForm::class)->middleware('auth')->name('all-data.edit');
+// Courses CRUD
+Route::get('/courses', [CourseController::class, 'index'])->middleware('auth')->name('courses.index');
+Route::get('/courses/create', [CourseController::class, 'create'])->middleware('auth')->name('courses.create');
+Route::post('/courses', [CourseController::class, 'store'])->middleware('auth')->name('courses.store');
+Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->middleware('auth')->name('courses.edit');
+Route::put('/courses/{id}', [CourseController::class, 'update'])->middleware('auth')->name('courses.update');
+Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->middleware('auth')->name('courses.destroy');
 
-Route::get('/perhitungan', PerhitunganSaw::class)->middleware('auth')->name('perhitungan');
-Route::get('/result', ResultDisplay::class)->middleware('auth')->name('result');
+// Legacy route aliases for compatibility
+Route::get('/input-data', [CourseController::class, 'create'])->middleware('auth')->name('input-data');
+Route::get('/all-data', [CourseController::class, 'index'])->middleware('auth')->name('all-data');
+Route::get('/all-data/{id}/edit', [CourseController::class, 'edit'])->middleware('auth')->name('all-data.edit');
+
+// SAW Calculation
+Route::get('/perhitungan', [CalculationController::class, 'index'])->middleware('auth')->name('perhitungan');
+Route::post('/perhitungan', [CalculationController::class, 'calculate'])->middleware('auth')->name('perhitungan.calculate');
+Route::get('/result', [CalculationController::class, 'result'])->middleware('auth')->name('result');

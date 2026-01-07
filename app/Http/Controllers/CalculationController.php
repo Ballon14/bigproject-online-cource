@@ -13,10 +13,17 @@ class CalculationController extends Controller
     /**
      * Menampilkan halaman perhitungan SAW
      */
-    public function perhitungan()
+    public function index()
     {
         $courses = Course::all();
 
+        // Load last calculation if exists
+        $latestCalculation = Calculation::where('user_id', Auth::id())
+            ->with('results.course')
+            ->latest()
+            ->first();
+
+        // Default weights
         $bobot = [
             'biaya' => 20,
             'rating' => 25,
@@ -27,13 +34,12 @@ class CalculationController extends Controller
         ];
 
         $results = [];
-        $latestCalculation = Calculation::where('user_id', Auth::id())
-            ->with('results.course')
-            ->latest()
-            ->first();
+        $showResults = false;
+        $calculationId = null;
 
         if ($latestCalculation) {
-            $bobot = [
+            // Normalize weights for display
+            $rawBobot = [
                 'biaya' => $latestCalculation->biaya,
                 'rating' => $latestCalculation->rating,
                 'durasi' => $latestCalculation->durasi,
@@ -42,39 +48,32 @@ class CalculationController extends Controller
                 'update_terakhir' => $latestCalculation->update_terakhir,
             ];
 
-            $totalBobot = array_sum($bobot);
+            $totalBobot = array_sum($rawBobot);
             if ($totalBobot > 0) {
-                foreach ($bobot as $key => $value) {
+                foreach ($rawBobot as $key => $value) {
                     $bobot[$key] = ($value / $totalBobot) * 100;
                 }
             }
 
-            foreach ($latestCalculation->results->sortByDesc('nilai_saw') as $index => $result) {
-                $results[] = [
-                    'course' => $result->course,
-                    'norm_biaya' => $result->norm_biaya,
-                    'norm_rating' => $result->norm_rating,
-                    'norm_durasi' => $result->norm_durasi,
-                    'norm_fleksibilitas' => $result->norm_fleksibilitas,
-                    'norm_sertifikat' => $result->norm_sertifikat,
-                    'norm_update' => $result->norm_update,
-                    'nilai_saw' => $result->nilai_saw,
-                ];
-            }
+            $calculationId = $latestCalculation->id;
+            $results = $latestCalculation->results->sortBy('ranking');
+            $showResults = true;
         }
 
-        return view('perhitungan', [
+        return view('calculation.index', [
             'title' => 'Perhitungan SAW',
             'courses' => $courses,
             'bobot' => $bobot,
             'results' => $results,
+            'showResults' => $showResults,
+            'calculationId' => $calculationId,
         ]);
     }
 
     /**
-     * Menyimpan dan menghitung SAW
+     * Proses perhitungan SAW dan simpan ke database
      */
-    public function storePerhitungan(Request $request)
+    public function calculate(Request $request)
     {
         $validated = $request->validate([
             'biaya' => 'required|numeric|min:0',
@@ -83,20 +82,19 @@ class CalculationController extends Controller
             'fleksibilitas' => 'required|numeric|min:0',
             'sertifikat' => 'required|numeric|min:0',
             'update_terakhir' => 'required|numeric|min:0',
-        ], [
-            'biaya.required' => 'Cost weight is required.',
-            'rating.required' => 'Rating weight is required.',
-            'durasi.required' => 'Duration weight is required.',
-            'fleksibilitas.required' => 'Flexibility weight is required.',
-            'sertifikat.required' => 'Certificate weight is required.',
-            'update_terakhir.required' => 'Last update weight is required.',
         ]);
 
         $totalBobot = array_sum($validated);
         if ($totalBobot <= 0) {
-            return back()->withErrors(['bobot' => 'Total weight must be greater than 0.'])->withInput();
+            return redirect()->back()->with('error', 'Total weight must be greater than 0.');
         }
 
+        $courses = Course::all();
+        if ($courses->isEmpty()) {
+            return redirect()->back()->with('error', 'No courses available. Please add courses first.');
+        }
+
+        // Simpan calculation
         $calculation = Calculation::create([
             'user_id' => Auth::id(),
             'biaya' => $validated['biaya'],
@@ -107,13 +105,17 @@ class CalculationController extends Controller
             'update_terakhir' => $validated['update_terakhir'],
         ]);
 
-        $bobot = [];
-        foreach ($validated as $key => $value) {
-            $bobot[$key] = ($value / $totalBobot) * 100;
-        }
+        // Normalize weights
+        $bobot = [
+            'biaya' => ($validated['biaya'] / $totalBobot) * 100,
+            'rating' => ($validated['rating'] / $totalBobot) * 100,
+            'durasi' => ($validated['durasi'] / $totalBobot) * 100,
+            'fleksibilitas' => ($validated['fleksibilitas'] / $totalBobot) * 100,
+            'sertifikat' => ($validated['sertifikat'] / $totalBobot) * 100,
+            'update_terakhir' => ($validated['update_terakhir'] / $totalBobot) * 100,
+        ];
 
-        $courses = Course::all();
-
+        // Determine max and min for normalization
         $maxBiaya = $courses->max('biaya');
         $minBiaya = $courses->min('biaya');
         $maxRating = $courses->max('rating');
@@ -123,19 +125,28 @@ class CalculationController extends Controller
         $maxSertifikat = 5;
         $maxUpdate = 5;
 
+        // Calculate SAW for each course
         $results = [];
         foreach ($courses as $course) {
+            // Cost normalization (lower is better)
             $normBiaya = ($maxBiaya - $minBiaya) > 0
                 ? ($maxBiaya - $course->biaya) / ($maxBiaya - $minBiaya)
                 : 1;
+
+            // Rating normalization (higher is better)
             $normRating = $maxRating > 0 ? $course->rating / $maxRating : 0;
+
+            // Duration normalization (lower is better)
             $normDurasi = ($maxDurasi - $minDurasi) > 0
                 ? ($maxDurasi - $course->durasi) / ($maxDurasi - $minDurasi)
                 : 1;
+
+            // Benefit criteria normalization
             $normFleksibilitas = $maxFleksibilitas > 0 ? $course->fleksibilitas / $maxFleksibilitas : 0;
             $normSertifikat = $maxSertifikat > 0 ? $course->sertifikat / $maxSertifikat : 0;
             $normUpdate = $maxUpdate > 0 ? $course->update_terakhir / $maxUpdate : 0;
 
+            // Calculate SAW value
             $nilaiSAW = (
                 ($normBiaya * $bobot['biaya']) +
                 ($normRating * $bobot['rating']) +
@@ -157,9 +168,13 @@ class CalculationController extends Controller
             ];
         }
 
-        usort($results, function ($a, $b) {
+        // Sort by SAW value (highest first)
+        usort($results, function($a, $b) {
             return $b['nilai_saw'] <=> $a['nilai_saw'];
         });
+
+        // Delete old results and save new ones
+        CalculationResult::where('calculation_id', $calculation->id)->delete();
 
         foreach ($results as $index => $result) {
             CalculationResult::create([
@@ -176,7 +191,7 @@ class CalculationController extends Controller
             ]);
         }
 
-        return redirect()->route('perhitungan')->with('success', 'SAW calculation saved successfully!');
+        return redirect()->route('result')->with('success', 'SAW calculation saved successfully!');
     }
 
     /**
@@ -193,7 +208,8 @@ class CalculationController extends Controller
             return redirect()->route('perhitungan')->with('error', 'No calculation results yet. Please calculate SAW first.');
         }
 
-        $bobot = [
+        // Normalize weights for display
+        $rawBobot = [
             'biaya' => $latestCalculation->biaya,
             'rating' => $latestCalculation->rating,
             'durasi' => $latestCalculation->durasi,
@@ -202,36 +218,21 @@ class CalculationController extends Controller
             'update_terakhir' => $latestCalculation->update_terakhir,
         ];
 
-        $totalBobot = array_sum($bobot);
+        $bobot = [];
+        $totalBobot = array_sum($rawBobot);
         if ($totalBobot > 0) {
-            foreach ($bobot as $key => $value) {
+            foreach ($rawBobot as $key => $value) {
                 $bobot[$key] = ($value / $totalBobot) * 100;
             }
         }
 
         $results = $latestCalculation->results->sortBy('ranking');
 
-        return view('result', [
+        return view('calculation.result', [
             'title' => 'Hasil Perhitungan SAW',
             'calculation' => $latestCalculation,
             'bobot' => $bobot,
             'results' => $results,
-        ]);
-    }
-
-    /**
-     * Menampilkan riwayat perhitungan SAW
-     */
-    public function history()
-    {
-        $calculations = Calculation::where('user_id', Auth::id())
-            ->with('results.course')
-            ->latest()
-            ->paginate(10);
-
-        return view('calculation-history', [
-            'title' => 'Riwayat Perhitungan',
-            'calculations' => $calculations,
         ]);
     }
 }
