@@ -20,6 +20,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::get('/dashboard/export/csv', [DashboardController::class, 'exportCSV'])->middleware('auth')->name('dashboard.export.csv');
+Route::get('/dashboard/export/excel', [DashboardController::class, 'exportExcel'])->middleware('auth')->name('dashboard.export.excel');
 
 // User Profile
 Route::get('/user-detail', [UserController::class, 'profile'])
